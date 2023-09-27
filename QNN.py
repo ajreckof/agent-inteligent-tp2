@@ -2,8 +2,16 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
+def init_weights(m):
+	if isinstance(m, nn.Linear):
+		torch.nn.init.uniform_(m.weight)
+		m.bias.data.fill_(0.01)
+
 class QNN(nn.Module):
 	"""Reseau de neurones pour approximer la Q fonction."""
+
+
 
 	def __init__(self, seed=0):
 		"""Initialisation des parametres ...
@@ -21,6 +29,7 @@ class QNN(nn.Module):
 			nn.ReLU(),
 			nn.Linear(128, 4)
 		)
+		self.seq.apply(init_weights)
 
 	def forward(self, state):
 		"""Forward pass"""

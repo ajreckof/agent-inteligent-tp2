@@ -21,10 +21,10 @@ class AgentGlouton():
 
     def getAction(self, state):
         if random.random() < self.eps:
+            return random.choice(range(4))
+        else:
             q_values = self.QNN(torch.from_numpy(state))
             return int(torch.argmax(q_values))
-        else:
-            return random.choice(range(4))
 
     
         
