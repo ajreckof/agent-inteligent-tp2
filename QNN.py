@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 def init_weights(m):
 	if isinstance(m, nn.Linear):
-		torch.nn.init.uniform_(m.weight)
+		nn.init.uniform_(m.weight)
 		m.bias.data.fill_(0.01)
 
 class QNN(nn.Module):
