@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.ticker import ScalarFormatter
 
 
 def plot_sumrwdperepi(sum_rewards):
@@ -12,18 +13,22 @@ def plot_sumrwdperepi(sum_rewards):
     plt.show()
     
     
-def plot_sumrwd_mean_perepi(sum_rewards,avgs):
+def plot_sumrwd_mean_perepi(sum_rewards,avgs, file_name = ""):
     "trace courbe de somme des rec et moyenne glissante par episodes"
-    print("sum_rwd:",type(sum_rewards))
-    print("avgs:",type(avgs))
     fig = plt.figure()
     ax = fig.add_subplot(111)
+    ax.set_yscale('symlog', linthresh=250)
+    yticks=[-1000,-500] + [50 * i for i in range(-5, 6)]
+    ax.set_yticks(yticks)
+    ax.get_yaxis().set_major_formatter(ScalarFormatter())
+    ax.grid(visible= True, which='both')
     plt.plot(np.arange(len(sum_rewards)), sum_rewards, label='sum_rwd')
     plt.plot(np.arange(len(avgs)), avgs, c='r', label='average')
     plt.ylabel('Score')
     plt.xlabel('Episode #')
     plt.legend(loc='upper left');
-    plt.show()
+    if file_name :
+        plt.savefig(f'plot/{file_name}.pdf')
     
     
 

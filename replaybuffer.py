@@ -10,7 +10,7 @@ import torch.optim as optim
 class ReplayBuffer:
     """Buffer de taille fixe pour mémoriser les tuples d'expériences rencontrés."""
 
-    def __init__(self,  buffer_size: int, batch_size: int, seed=0):
+    def __init__(self,  buffer_size: int, batch_size: int):
         """Constructeur.
 
         Params
@@ -21,8 +21,6 @@ class ReplayBuffer:
         """
         self.memory = deque(maxlen=buffer_size)
         self.batch_size = batch_size
-        self.seed = random.seed(seed)
-
         self.experience = namedtuple("Experience", field_names=[
                                      "state", "action", "next_state", "reward", "done"])
 
@@ -36,11 +34,11 @@ class ReplayBuffer:
         experiences = random.sample(self.memory, k=self.batch_size)
 
         states = torch.tensor(
-            [e.state for e in experiences if e is not None]).float()
+            np.vstack([e.state for e in experiences if e is not None])).float()
         actions = torch.from_numpy(np.vstack(
             [e.action for e in experiences if e is not None]).astype(np.uint8))
-        next_states = torch.tensor(
-            [e.next_state for e in experiences if e is not None]).float()
+        next_states = torch.tensor(np.vstack(
+            [e.next_state for e in experiences if e is not None])).float()
         rewards = torch.tensor(
             [e.reward for e in experiences if e is not None]).float()
         dones = torch.from_numpy(np.vstack(

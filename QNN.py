@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 def init_weights(m):
 	if isinstance(m, nn.Linear):
-		nn.init.uniform_(m.weight)
+		nn.init.uniform_(m.weight,-0.1,0.1)
 		m.bias.data.fill_(0.01)
 
 class QNN(nn.Module):
@@ -13,14 +13,13 @@ class QNN(nn.Module):
 
 
 
-	def __init__(self, seed=0):
+	def __init__(self):
 		"""Initialisation des parametres ...
 		Params
 		======
 			seed (int): Random seed
 		"""
 		super().__init__()
-		self.seed = torch.manual_seed(seed)
 
 		self.seq = nn.Sequential(
 			nn.Linear(8, 128),
